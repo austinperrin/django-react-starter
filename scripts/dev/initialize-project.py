@@ -25,6 +25,13 @@ URL_FILES = {
 EMAIL_FILES = ('SECURITY.md', 'CODE_OF_CONDUCT.md')
 REMOVALS = (
   'docs/architecture/phase-6-verification.md',
+  'docs/roadmap/milestone-1-django-react-starter/README.md',
+  'docs/roadmap/milestone-1-django-react-starter/phase-1-starter-identity.md',
+  'docs/roadmap/milestone-1-django-react-starter/phase-2-stack-decisions.md',
+  'docs/roadmap/milestone-1-django-react-starter/phase-3-backend.md',
+  'docs/roadmap/milestone-1-django-react-starter/phase-4-frontend.md',
+  'docs/roadmap/milestone-1-django-react-starter/phase-5-integration.md',
+  'docs/roadmap/milestone-1-django-react-starter/phase-6-adoption.md',
   'docs/runbooks/initialize-repository.md',
   'scripts/dev/initialize-project.py',
   'scripts/dev/tests/test_initialize_project.py',
@@ -190,12 +197,18 @@ def finish_plan(setup_date):
     raise ValueError('The source roadmap schedule changed; review it manually.')
   content = content.replace(source_row, project_row)
   rows = content.splitlines(keepends=True)
-  phase_rows = [row for row in rows if row.startswith('|  | [Phase ')]
+  phase_rows = [row for row in rows if row.startswith('|  | [Phase ')
+                and '(milestone-0-repository-scaffolding.md#phase-' in row]
   if len(phase_rows) != 10 or any(
       sum(row.startswith(f'|  | [Phase {number}: ') for row in phase_rows) != 1
       for number in range(10)):
     raise ValueError('The source roadmap phases changed; review them manually.')
-  plan[name] = ''.join(row for row in rows if row not in phase_rows)
+  starter_rows = [row for row in rows if
+                  row.startswith('| [Milestone 1: Django and React starter]') or
+                  '(milestone-1-django-react-starter/' in row]
+  if len(starter_rows) != 7:
+    raise ValueError('The starter roadmap rows changed; review them manually.')
+  plan[name] = ''.join(row for row in rows if row not in phase_rows + starter_rows)
 
   name = 'docs/runbooks/README.md'
   row = '| [Initialize a project repository](initialize-repository.md) | Turn the scaffold into a new project repository |\n'

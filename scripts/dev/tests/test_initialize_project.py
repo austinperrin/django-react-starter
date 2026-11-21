@@ -78,12 +78,16 @@ class ProjectInitializationTests(unittest.TestCase):
                   (self.root / 'CODE_OF_CONDUCT.md').read_text())
     preview = self.helper('finish')
     self.assertIn('Would remove: docs/architecture/phase-6-verification.md', preview.stdout)
+    self.assertIn('Would remove: docs/roadmap/milestone-1-django-react-starter/README.md',
+                  preview.stdout)
     self.assertIn('Milestone 0 actual start and end:', preview.stdout)
     self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
     date_before = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
     self.helper('finish', '--apply')
     date_after = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
     for name in ('docs/architecture/phase-6-verification.md',
+                 'docs/roadmap/milestone-1-django-react-starter/README.md',
+                 'docs/roadmap/milestone-1-django-react-starter/phase-6-adoption.md',
                  'docs/runbooks/initialize-repository.md',
                  'scripts/dev/initialize-project.py',
                  'scripts/dev/tests/test_initialize_project.py'):
@@ -104,6 +108,7 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertEqual(cells[7], cells[6])
     self.assertEqual(cells[8], 'Not measured')
     self.assertNotIn('|  | [Phase 0:', roadmap)
+    self.assertNotIn('milestone-1-django-react-starter/', roadmap)
     self.assertNotIn('austinperrin/scaffolding', milestone)
     self.assertNotIn('austinperrin/base', milestone)
     self.assertNotIn('phase-6-verification.md', milestone)
