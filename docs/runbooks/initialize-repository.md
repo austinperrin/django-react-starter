@@ -121,9 +121,10 @@ documentation after setup.
     ```
 
     Review the exact updates and removals, then repeat with `--apply`. This removes
-    the one-time runbook and helper, its tests, and the original scaffold's
-    Phase 6 verification record; it updates their incoming links and replaces
-    Milestone 0 with the project-owned setup summary. The helper
+    the one-time runbook and helper, its tests, the source-only Phase 6
+    verification record, and the source repository's Milestone 1 planning pages; it
+    updates their incoming links and replaces Milestone 0 with the project-owned
+    setup summary. The helper
     refuses modified removal candidates or unexpected incoming links, and rolls
     back its changes if documentation checks fail.
 13. Review the final diff, run local checks, and push the cleanup commit to the

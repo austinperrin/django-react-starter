@@ -55,6 +55,13 @@ readable without styling.
 |  | [Phase 7: Maintenance procedures](milestone-0-repository-scaffolding.md#phase-7-maintenance-procedures) | Repository maintainers | 3–5 days | Not recorded | Not recorded | 2026-11-09 | 2026-11-10 | Not measured | <span style="color: green;">Completed</span> |
 |  | [Phase 8: Project setup guidance](milestone-0-repository-scaffolding.md#phase-8-project-setup-guidance) | Repository maintainers | 3–5 days | Not recorded | Not recorded | 2026-11-10 | 2026-11-10 | Not measured | <span style="color: green;">Completed</span> |
 |  | [Phase 9: Assembled verification](milestone-0-repository-scaffolding.md#phase-9-assembled-verification) | Repository maintainers | 2–4 days | Not recorded | Not recorded | 2026-11-10 | 2026-11-11 | Not measured | <span style="color: green;">Completed</span> |
+| [Milestone 1: Django and React starter](milestone-1-django-react-starter/README.md) |  | Repository maintainers | 3–5 weeks | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 1: Own the starter identity](milestone-1-django-react-starter/phase-1-starter-identity.md) | Repository maintainers | 1–2 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 2: Record stack decisions](milestone-1-django-react-starter/phase-2-stack-decisions.md) | Repository maintainers | 2–4 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 3: Build the backend baseline](milestone-1-django-react-starter/phase-3-backend.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 4: Build the frontend baseline](milestone-1-django-react-starter/phase-4-frontend.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 5: Integrate checks and operations](milestone-1-django-react-starter/phase-5-integration.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 6: Verify adoption](milestone-1-django-react-starter/phase-6-adoption.md) | Repository maintainers | 2–4 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
 
 Milestone rows summarize their phase work. Link each milestone and phase to its
 owning page or section. Record the accountable owner in each row; assign an owner
