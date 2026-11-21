@@ -31,7 +31,8 @@ refer to the original scaffold and remove themselves during project cleanup.
 ## Exit Criteria
 
 - [ ] Active links and identity point to this repository.
-- [ ] The future adopter's initialization procedure is preserved and previewable.
+- [ ] The future adopter's initialization procedure is preserved and can be
+  previewed.
 
 ## Progress and Evidence
 
