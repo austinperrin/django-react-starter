@@ -1,18 +1,22 @@
-# Repository Scaffolding
+# Django and React Starter
 
-A codeless, language-agnostic scaffold for software projects, with repository
-standards, structured documentation, and automated quality checks.
+A repository starting point for Django REST Framework and React/Vite TypeScript
+projects, with shared standards, structured documentation, and automated checks.
+The application baseline is in progress; follow the [roadmap](docs/roadmap/README.md)
+for its status.
 
 ## Start a Project
 
-Follow the [repository-initialization runbook](docs/runbooks/initialize-repository.md)
-to create a project from this scaffold, replace its identity and reporting
+After [Milestone 1](docs/roadmap/milestone-1-django-react-starter/README.md) is
+complete, follow the [repository-initialization runbook](docs/runbooks/initialize-repository.md)
+to create a project from this starter, replace its identity and reporting
 contacts, assign owners, and verify the new repository. For a GitHub project,
 follow the [GitHub configuration runbook](docs/runbooks/configure-github.md) to
-activate and verify repository controls. Plan the project's next work in the
-[roadmap](docs/roadmap/README.md), starting with Milestone 1.
+activate and verify repository controls. The repository foundation is Milestone 0,
+and the Django and React application baseline is Milestone 1. Plan new project
+work from Milestone 2 in the [roadmap](docs/roadmap/README.md).
 
-## Explore the Scaffold
+## Explore the Repository
 
 | Area | What it provides |
 | :--- | :--- |
@@ -26,7 +30,7 @@ activate and verify repository controls. Plan the project's next work in the
 The [documentation hub](docs/README.md) connects these areas. The
 [project roadmap](docs/roadmap/README.md) owns current progress and upcoming work.
 
-## Contribute to This Scaffold
+## Contribute to This Project
 
 Follow the [contribution guide](CONTRIBUTING.md) to improve this repository.
 The [Code of Conduct](CODE_OF_CONDUCT.md) sets community expectations, and the
