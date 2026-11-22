@@ -98,7 +98,7 @@ def repository_root():
       if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', name):
         break
       if name.lower() in SOURCE_ALIASES:
-        raise ValueError('The origin remote still points to the foundation repository.')
+        raise ValueError('The origin remote still points to a source repository.')
       return name
   raise ValueError('The origin remote must identify the new GitHub repository.')
 
@@ -214,6 +214,13 @@ def finish_plan(setup_date, retain_source_contact=False):
                 and '(milestone-1-django-react-starter/' in row]
   if len(milestone_rows) != 1 or len(phase_rows) != 6:
     raise ValueError('The starter roadmap rows changed; review them manually.')
+  completed = '<span style="color: green;">Completed</span>'
+  cells_by_row = [[cell.strip() for cell in row.strip().strip('|').split('|')]
+                  for row in milestone_rows + phase_rows]
+  if any(len(cells) != 10 or cells[9] != completed or
+         not re.fullmatch(r'\d{4}-\d{2}-\d{2}', cells[7])
+         for cells in cells_by_row):
+    raise ValueError('Complete Milestone 1 and each phase with actual end dates before finishing.')
   project_row = ('| [Milestone 1: Django and React Baseline](milestone-1-django-react-baseline.md) '
                  '|  | Repository maintainers | 3–5 weeks | Not recorded | Not recorded '
                  f'| {setup_date} | {setup_date} | Not measured '
@@ -222,7 +229,7 @@ def finish_plan(setup_date, retain_source_contact=False):
                        for row in rows if row not in phase_rows)
 
   name = 'docs/runbooks/README.md'
-  row = '| [Initialize a project repository](initialize-repository.md) | Turn the scaffold into a new project repository |\n'
+  row = '| [Initialize a project repository](initialize-repository.md) | Turn this starter into a new project repository |\n'
   plan[name] = replace_count(name, row, '', 1)
 
   name = 'scripts/README.md'
@@ -236,9 +243,10 @@ def finish_plan(setup_date, retain_source_contact=False):
     'dates, a concise Milestone 1 record, and removal of one-time files. Each stage\n'
     'requires `--apply` to write changes. The helper checks the destination GitHub\n'
     'remote, refuses modified removal candidates, and checks documentation after\n'
-    'applying changes. It leaves the root README, review owners, ADR outcomes, and live\n'
-    'repository settings for the maintainer to resolve. To keep the monitored starter\n'
-    'reporting address, pass\n'
+    'applying changes. `finish` also requires Milestone 1 and all its phases to show\n'
+    'Completed status and actual end dates in the roadmap. The helper leaves the root\n'
+    'README, review owners, ADR outcomes, and live repository settings for the\n'
+    'maintainer to resolve. To keep the monitored starter reporting address, pass\n'
     '`--retain-source-contact` to both `configure` and `finish`.\n\n'
   )
   if content.count(section) != 1:

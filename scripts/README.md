@@ -41,9 +41,10 @@ reporting-contact replacements; `finish` previews completed Milestone 0 and 1
 dates, a concise Milestone 1 record, and removal of one-time files. Each stage
 requires `--apply` to write changes. The helper checks the destination GitHub
 remote, refuses modified removal candidates, and checks documentation after
-applying changes. It leaves the root README, review owners, ADR outcomes, and live
-repository settings for the maintainer to resolve. To keep the monitored starter
-reporting address, pass
+applying changes. `finish` also requires Milestone 1 and all its phases to show
+Completed status and actual end dates in the roadmap. The helper leaves the root
+README, review owners, ADR outcomes, and live repository settings for the
+maintainer to resolve. To keep the monitored starter reporting address, pass
 `--retain-source-contact` to both `configure` and `finish`.
 
 ## ADR Generation

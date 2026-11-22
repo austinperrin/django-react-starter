@@ -4,9 +4,9 @@
 
 ## Objective and Triggers
 
-Use this procedure when starting a new project from this repository's scaffold.
+Use this procedure when starting a new project from this Django and React starter.
 It establishes the new repository's identity, reporting contacts, ownership, local
-checks, and setup evidence. To improve the scaffold itself, use the
+checks, and setup evidence. To improve the starter itself, use the
 [contribution guide](../../CONTRIBUTING.md) instead.
 
 This procedure is for initial setup. Keep the [roadmap](../roadmap/README.md),
@@ -19,8 +19,8 @@ documentation after setup.
   permission to create it and configure its settings.
 - Identify a maintainer, a private security-reporting contact, and a conduct-reporting
   contact. Confirm both contacts are monitored before publishing them.
-- Use Git and a clean copy of the scaffold's reviewed default branch. Decide
-  whether to start with a new history or retain the scaffold's Git history.
+- Use Git and a clean copy of the starter's reviewed default branch. Decide
+  whether to start with a new history or retain the starter's Git history.
 - Review the [repository ownership standard](../standards/ownership.md) and the
   [repository settings checklist](../architecture/repository-settings.md). Access
   to GitHub settings and review-owner accounts is needed for their activation.
@@ -30,12 +30,12 @@ documentation after setup.
 ### Create the New Repository
 
 1. For a new history, select **Use this template > Create a new repository** when
-   template creation is enabled for the scaffold. Enter the new owner, name,
+   template creation is enabled for the starter. Enter the new owner, name,
    description, and visibility. Copy the default branch only. Clone the new
    repository and confirm `git remote -v` points to it. GitHub's
    [template instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
    describe the current interface and how template history differs from a fork.
-2. If you need to retain the scaffold's history, clone its reviewed default
+2. If you need to retain the starter's history, clone its reviewed default
    branch and create an empty destination repository. Change the clone's `origin`
    URL to the destination before pushing. Replace `PROJECT_DIRECTORY`, `OWNER`,
    and `REPOSITORY` in these commands with the new project's values:
@@ -55,7 +55,7 @@ documentation after setup.
 
 ### Set Identity and Reporting Contacts
 
-4. Replace the title, description, and scaffold-specific introduction in the
+4. Replace the title, description, and starter-specific introduction in the
    [root README](../../README.md) with the project's purpose and first steps.
    Keep useful paths to documentation, contribution, security, and the roadmap.
 5. Preview the one-time replacement of the source repository links and reporting
@@ -119,8 +119,10 @@ documentation after setup.
     [repository settings checklist](../architecture/repository-settings.md).
     Verify workflow permissions, review owners, merge rules, and private reporting.
     A copied workflow file does not activate branch protection.
-12. After the setup and settings are verified, preview the one-time cleanup and
-    roadmap conversion:
+12. After the setup and settings are verified, confirm the copied Milestone 1
+    and all its phases are marked Completed with recorded actual end dates in the
+    [roadmap schedule](../roadmap/README.md#schedule). Then preview the one-time
+    cleanup and roadmap conversion:
 
     ```bash
     python3 scripts/dev/initialize-project.py finish

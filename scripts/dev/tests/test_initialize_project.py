@@ -57,7 +57,27 @@ class ProjectInitializationTests(unittest.TestCase):
                        '--conduct-email', 'conduct@example.test',
                        *arguments, check=check)
 
-  def prepare_finish(self):
+  def complete_milestone_1(self, record_end=True):
+    path = self.root / 'docs/roadmap/README.md'
+    rows = []
+    for row in path.read_text().splitlines(keepends=True):
+      if (row.startswith('| [Milestone 1: Django and React starter]') or
+          (row.startswith('|  | [Phase ') and 'milestone-1-django-react-starter/' in row)):
+        cells = [cell.strip() for cell in row.strip().strip('|').split('|')]
+        cells[6] = '2026-11-22'
+        if record_end:
+          cells[7] = '2026-11-22'
+        cells[8] = 'Completed early'
+        cells[9] = '<span style="color: green;">Completed</span>'
+        row = '| ' + ' | '.join(cells) + ' |\n'
+      rows.append(row)
+    path.write_text(''.join(rows))
+    self.git('add', 'docs/roadmap/README.md')
+    self.git('commit', '-qm', 'test: record completed application baseline')
+
+  def prepare_finish(self, complete=True, record_end=True):
+    if complete:
+      self.complete_milestone_1(record_end=record_end)
     self.configure('--apply')
     (self.root / 'README.md').write_text('# Example Project\n\nProject overview.\n')
     (self.root / '.github/CODEOWNERS').write_text(
@@ -143,6 +163,20 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertIn('modified', result.stderr)
     self.assertTrue(record.exists())
 
+  def test_incomplete_milestone_blocks_finish(self):
+    self.prepare_finish(complete=False)
+    result = self.helper('finish', '--apply', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('Complete Milestone 1 and each phase', result.stderr)
+    self.assertTrue((self.root / 'docs/roadmap/milestone-1-django-react-starter/README.md').exists())
+
+  def test_completed_status_without_actual_end_dates_blocks_finish(self):
+    self.prepare_finish(record_end=False)
+    result = self.helper('finish', '--apply', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('actual end dates', result.stderr)
+    self.assertTrue((self.root / 'docs/roadmap/milestone-1-django-react-starter/README.md').exists())
+
   def test_modified_milestone_blocks_replacement(self):
     self.prepare_finish()
     milestone = self.root / 'docs/roadmap/milestone-0-repository-scaffolding.md'
@@ -168,7 +202,7 @@ class ProjectInitializationTests(unittest.TestCase):
         self.git('remote', 'set-url', 'origin', f'https://github.com/{repository}.git')
         result = self.configure('--apply', check=False)
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn('foundation repository', result.stderr)
+        self.assertIn('source repository', result.stderr)
         self.assertEqual(self.git('status', '--porcelain').stdout, '')
 
   def test_retaining_source_contact_requires_explicit_flag(self):
@@ -181,6 +215,7 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertEqual(self.git('status', '--porcelain').stdout, '')
 
   def test_any_owner_can_explicitly_keep_monitored_contacts(self):
+    self.complete_milestone_1()
     result = self.helper('configure', '--repository', 'example/project',
                          '--security-email', 'perrinaustin@gmail.com',
                          '--conduct-email', 'perrinaustin@gmail.com',
