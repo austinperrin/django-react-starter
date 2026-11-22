@@ -22,7 +22,7 @@ URL_FILES = {
 EMAIL_FILES = ('SECURITY.md', 'CODE_OF_CONDUCT.md')
 PROJECT_MILESTONE_PATH = 'docs/roadmap/milestone-1-django-react-baseline.md'
 REMOVALS = (
-  'docs/architecture/phase-6-verification.md',
+  'docs/architecture/starter-verification.md',
   'docs/roadmap/milestone-1-django-react-starter/README.md',
   'docs/roadmap/milestone-1-django-react-starter/phase-1-starter-identity.md',
   'docs/roadmap/milestone-1-django-react-starter/phase-2-stack-decisions.md',
@@ -179,7 +179,7 @@ def finish_plan(setup_date, retain_source_contact=False):
 
   plan = {}
   name = 'docs/architecture/README.md'
-  row = '| [Phase 6 verification record](phase-6-verification.md) | Historical foundation results and remaining verification cases |\n'
+  row = '| [Starter repository verification](starter-verification.md) | This repository\'s settings, hosted checks, and remaining verification cases |\n'
   plan[name] = replace_count(name, row, '', 1)
 
   name = 'docs/roadmap/milestone-0-repository-scaffolding.md'
@@ -284,7 +284,7 @@ def finish_plan(setup_date, retain_source_contact=False):
       if content is None and name in plan:
         continue
       content = content if content is not None else path.read_text(encoding='utf-8')
-      if 'phase-6-verification.md' in content:
+      if 'starter-verification.md' in content:
         raise ValueError(f'An incoming verification-record link remains in {name}.')
       if 'initialize-repository.md' in content:
         raise ValueError(f'An incoming initialization-runbook link remains in {name}.')

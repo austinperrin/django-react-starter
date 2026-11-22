@@ -131,8 +131,8 @@ documentation after setup.
     If either policy file still uses its original reporting address, add
     `--retain-source-contact` to this preview and the `--apply` command. Review
     the exact updates and removals, then repeat with `--apply`. This removes
-    the one-time runbook and helper, its tests, the source-only Phase 6
-    verification record, and the detailed Milestone 1 planning pages. It updates
+    the one-time runbook and helper, its tests, the starter-only verification
+    record, and the detailed Milestone 1 planning pages. It updates
     incoming links, retains Milestone 0, and creates a completed Milestone 1 record.
     The helper refuses modified files scheduled for replacement or removal and
     unexpected incoming links. It rolls back its changes if documentation checks

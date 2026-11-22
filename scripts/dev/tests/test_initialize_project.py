@@ -101,18 +101,18 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertIn('conduct@example.test',
                   (self.root / 'CODE_OF_CONDUCT.md').read_text())
     preview = self.helper('finish')
-    self.assertIn('Would remove: docs/architecture/phase-6-verification.md', preview.stdout)
+    self.assertIn('Would remove: docs/architecture/starter-verification.md', preview.stdout)
     self.assertIn('Would remove: docs/roadmap/milestone-1-django-react-starter/README.md',
                   preview.stdout)
     self.assertIn('Would create: docs/roadmap/milestone-1-django-react-baseline.md',
                   preview.stdout)
     self.assertIn('Milestones 0 and 1 actual start and end:', preview.stdout)
     self.assertFalse((self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').exists())
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
     date_before = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
     self.helper('finish', '--apply')
     date_after = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
-    for name in ('docs/architecture/phase-6-verification.md',
+    for name in ('docs/architecture/starter-verification.md',
                  'docs/roadmap/milestone-1-django-react-starter/README.md',
                  'docs/roadmap/milestone-1-django-react-starter/phase-6-adoption.md',
                  'docs/runbooks/initialize-repository.md',
@@ -144,7 +144,7 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertNotIn('milestone-1-django-react-starter/', roadmap)
     self.assertNotIn('austinperrin/scaffolding', milestone_0 + milestone_1)
     self.assertNotIn('austinperrin/base', milestone_0 + milestone_1)
-    self.assertNotIn('phase-6-verification.md', milestone_0 + milestone_1)
+    self.assertNotIn('starter-verification.md', milestone_0 + milestone_1)
     self.assertNotIn('PRs #', milestone_0 + milestone_1)
     self.assertNotIn('foundation', (self.root / 'docs/runbooks/configure-github.md').read_text())
     for path in self.root.rglob('*.md'):
@@ -156,7 +156,7 @@ class ProjectInitializationTests(unittest.TestCase):
 
   def test_modified_removal_candidate_blocks_finish(self):
     self.prepare_finish()
-    record = self.root / 'docs/architecture/phase-6-verification.md'
+    record = self.root / 'docs/architecture/starter-verification.md'
     record.write_text(record.read_text() + '\nProject note.\n')
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
@@ -257,7 +257,7 @@ class ProjectInitializationTests(unittest.TestCase):
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('CODEOWNERS', result.stderr)
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
 
   def test_wrong_destination_link_blocks_finish(self):
     self.prepare_finish()
@@ -266,7 +266,7 @@ class ProjectInitializationTests(unittest.TestCase):
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('Confirm the new repository links', result.stderr)
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
 
   def test_failed_link_check_restores_all_cleanup_candidates(self):
     self.prepare_finish()
@@ -274,7 +274,7 @@ class ProjectInitializationTests(unittest.TestCase):
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('check-links.sh failed', result.stderr)
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
     self.assertTrue((self.root / 'docs/roadmap/milestone-1-django-react-starter/README.md').exists())
     self.assertFalse((self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').exists())
     self.assertTrue((self.root / 'scripts/dev/initialize-project.py').exists())
