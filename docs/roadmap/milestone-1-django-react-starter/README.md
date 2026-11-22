@@ -8,7 +8,7 @@
   project, run a minimal Django REST Framework API and React/Vite application,
   and extend both under documented standards and working checks.
 - **Owner and schedule:** [Roadmap schedule](../README.md#schedule).
-- **Last review:** 2026-11-21.
+- **Last review:** 2026-11-22.
 - **Dependencies:** The completed [repository baseline](../milestone-0-repository-scaffolding.md),
   the [decision log](../../adr/README.md), and the
   [initialization runbook](../../runbooks/initialize-repository.md).
@@ -40,9 +40,9 @@ starter's baseline.
 
 ## Progress and Changes
 
-Planning has started. First, make the copied repository's identity and
-initialization flow safe for another generation of adopters. Record decisions
-before introducing packages or runtime configuration.
+Phase 1 is in progress. The repository identity and Milestone 0 summary are in
+place; the future adopter's initialization flow is under review. Phase 2 will
+record decisions before packages or runtime configuration are introduced.
 
 ## Milestone Review and Handoff
 

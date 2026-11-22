@@ -13,7 +13,7 @@ refer to the original scaffold and remove themselves during project cleanup.
 
 ## Development Checklist
 
-- [ ] Replace source-repository links in active GitHub forms and describe this
+- [x] Replace source-repository links in active GitHub forms and describe this
   starter in the root README; keep reporting contacts monitored.
 - [ ] Collapse the copied Milestone 0 phase history into a concise record of
   this repository's setup, and replace source-only verification evidence.
@@ -36,7 +36,10 @@ refer to the original scaffold and remove themselves during project cleanup.
 
 ## Progress and Evidence
 
-Planned. Add reviewed pull requests, checks, and live settings evidence here.
+In progress. The root README and active GitHub links identify this starter, and
+Milestone 0 has a concise baseline record. The adopter cleanup changes are under
+review. Source-only verification evidence and this repository's live settings
+still need review before the phase closes.
 
 ## Related Documents
 

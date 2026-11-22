@@ -13,11 +13,11 @@ Estimates are planning ranges for focused maintainer work, including
 implementation, review, and verification. They are not delivery commitments or
 measured durations. One week means five working days.
 
-Use `YYYY-MM-DD` dates in the `America/Chicago` time zone. For an initialized
-repository baseline, record the setup date as both Milestone 0 actual dates.
-Use the first commit for each phase start and the closing pull request's merge
-date for its end. When a phase
-has no pull request, use its completion commit. Set planned dates when the owner
+Use `YYYY-MM-DD` dates in the `America/Chicago` time zone. For baseline milestones
+established during repository initialization, record the setup date as both actual
+dates. Use the first commit for each phase start and the closing pull request's
+merge date for its end. When a phase has no pull request, use its completion
+commit. Set planned dates when the owner
 commits to a target. Use `TBD` for a future estimate or date that is still open;
 use `Not recorded` when a historical value was never recorded.
 
@@ -38,6 +38,7 @@ readable without styling.
 | --- | --- |
 | TBD | No planned end date exists yet. |
 | On track | Current work is expected to meet the planned end date. |
+| Not started | Planned work has a target but has not begun. |
 | At risk | The planned end date may be missed; record a recovery action. |
 | Delayed | The planned end date passed and work remains incomplete. |
 | Completed early / on time / late | Compare actual completion with the planned end date. |
@@ -46,13 +47,13 @@ readable without styling.
 | Milestone | Stage / Phase | Owner | Estimate | Planned Start | Planned End | Actual Start | Actual End | Variance | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [Milestone 0: Repository Scaffolding](milestone-0-repository-scaffolding.md) |  | Repository maintainers | 5–9 weeks | Not recorded | Not recorded | 2026-11-22 | 2026-11-22 | Not measured | <span style="color: green;">Completed</span> |
-| [Milestone 1: Django and React starter](milestone-1-django-react-starter/README.md) |  | Repository maintainers | 3–5 weeks | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 1: Own the starter identity](milestone-1-django-react-starter/phase-1-starter-identity.md) | Repository maintainers | 1–2 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 2: Record stack decisions](milestone-1-django-react-starter/phase-2-stack-decisions.md) | Repository maintainers | 2–4 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 3: Build the backend baseline](milestone-1-django-react-starter/phase-3-backend.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 4: Build the frontend baseline](milestone-1-django-react-starter/phase-4-frontend.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 5: Integrate checks and operations](milestone-1-django-react-starter/phase-5-integration.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 6: Verify adoption](milestone-1-django-react-starter/phase-6-adoption.md) | Repository maintainers | 2–4 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+| [Milestone 1: Django and React starter](milestone-1-django-react-starter/README.md) |  | Repository maintainers | 3–5 weeks | 2026-11-21 | 2026-12-22 | 2026-11-21 | TBD | On track | <span style="color: #ca8a04;">In Progress</span> |
+|  | [Phase 1: Own the starter identity](milestone-1-django-react-starter/phase-1-starter-identity.md) | Repository maintainers | 1–2 days | 2026-11-21 | 2026-11-24 | 2026-11-21 | TBD | On track | <span style="color: #ca8a04;">In Progress</span> |
+|  | [Phase 2: Record stack decisions](milestone-1-django-react-starter/phase-2-stack-decisions.md) | Repository maintainers | 2–4 days | 2026-11-25 | 2026-12-01 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 3: Build the backend baseline](milestone-1-django-react-starter/phase-3-backend.md) | Repository maintainers | 3–5 days | 2026-12-02 | 2026-12-04 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 4: Build the frontend baseline](milestone-1-django-react-starter/phase-4-frontend.md) | Repository maintainers | 3–5 days | 2026-12-07 | 2026-12-09 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 5: Integrate checks and operations](milestone-1-django-react-starter/phase-5-integration.md) | Repository maintainers | 3–5 days | 2026-12-10 | 2026-12-16 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 6: Verify adoption](milestone-1-django-react-starter/phase-6-adoption.md) | Repository maintainers | 2–4 days | 2026-12-17 | 2026-12-22 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
 
 Milestone rows summarize their phase work. Link each milestone and phase to its
 owning page or section. Record the accountable owner in each row; assign an owner
