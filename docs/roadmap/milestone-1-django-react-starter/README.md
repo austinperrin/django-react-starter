@@ -9,7 +9,7 @@
   and extend both under documented standards and working checks.
 - **Owner and schedule:** [Roadmap schedule](../README.md#schedule).
 - **Last review:** 2026-11-21.
-- **Dependencies:** The inherited [repository baseline](../milestone-0-repository-scaffolding.md),
+- **Dependencies:** The completed [repository baseline](../milestone-0-repository-scaffolding.md),
   the [decision log](../../adr/README.md), and the
   [initialization runbook](../../runbooks/initialize-repository.md).
 - **Scope:** Starter identity, stack decisions, backend and frontend structure,

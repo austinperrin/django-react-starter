@@ -191,7 +191,7 @@ def finish_plan(setup_date, retain_source_contact=False):
   content = read_file(name)
   source_row = ('| [Milestone 0: Repository Scaffolding](milestone-0-repository-scaffolding.md) '
                 '|  | Repository maintainers | 5–9 weeks | Not recorded | Not recorded '
-                '| 2026-11-07 | 2026-11-11 | Not measured '
+                '| 2026-11-22 | 2026-11-22 | Not measured '
                 '| <span style="color: green;">Completed</span> |')
   project_row = ('| [Milestone 0: Repository Scaffolding](milestone-0-repository-scaffolding.md) '
                  '|  | Repository maintainers | 5–9 weeks | Not recorded | Not recorded '
@@ -201,18 +201,15 @@ def finish_plan(setup_date, retain_source_contact=False):
     raise ValueError('The source roadmap schedule changed; review it manually.')
   content = content.replace(source_row, project_row)
   rows = content.splitlines(keepends=True)
-  phase_rows = [row for row in rows if row.startswith('|  | [Phase ')
-                and '(milestone-0-repository-scaffolding.md#phase-' in row]
-  if len(phase_rows) != 10 or any(
-      sum(row.startswith(f'|  | [Phase {number}: ') for row in phase_rows) != 1
-      for number in range(10)):
+  if any(row.startswith('|  | [Phase ')
+         and '(milestone-0-repository-scaffolding.md#phase-' in row for row in rows):
     raise ValueError('The source roadmap phases changed; review them manually.')
   starter_rows = [row for row in rows if
                   row.startswith('| [Milestone 1: Django and React starter]') or
                   '(milestone-1-django-react-starter/' in row]
   if len(starter_rows) != 7:
     raise ValueError('The starter roadmap rows changed; review them manually.')
-  plan[name] = ''.join(row for row in rows if row not in phase_rows + starter_rows)
+  plan[name] = ''.join(row for row in rows if row not in starter_rows)
 
   name = 'docs/runbooks/README.md'
   row = '| [Initialize a project repository](initialize-repository.md) | Turn the scaffold into a new project repository |\n'
