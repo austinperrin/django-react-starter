@@ -96,11 +96,11 @@ documentation after setup.
    choose an implementation only when the project has the needed requirements and
    a responsible decision maker. Update the ADR and its index when a decision is
    approved. Do not add sample secret files merely to complete setup.
-9. The cleanup step replaces [Milestone 0](../roadmap/milestone-0-repository-scaffolding.md)
-   with a concise record of this repository's starting practices. It keeps the
-   typical baseline estimate and records the cleanup date as both the actual
-   start and end of Milestone 0. Create Milestone 1 for the next project goal
-   through the [roadmap delivery rules](../roadmap/README.md#delivery-rules).
+9. The cleanup step retains the completed [Milestone 0](../roadmap/milestone-0-repository-scaffolding.md)
+   record and turns the Milestone 1 planning pages into a concise completed
+   application-baseline record. It keeps both estimates and records the cleanup
+   date as the actual start and end of both milestones. Plan Milestone 2 for the
+   next project goal through the [roadmap delivery rules](../roadmap/README.md#delivery-rules).
    Record this repository's checks and settings in the initialization PR.
 
 ### Enable and Verify the Scaffold
@@ -129,9 +129,9 @@ documentation after setup.
     `--retain-source-contact` to this preview and the `--apply` command. Review
     the exact updates and removals, then repeat with `--apply`. This removes
     the one-time runbook and helper, its tests, the source-only Phase 6
-    verification record, and the source repository's Milestone 1 planning pages; it
-    updates their incoming links and replaces Milestone 0 with the project-owned
-    setup summary. The helper
+    verification record, and the detailed Milestone 1 planning pages. It updates
+    incoming links, retains Milestone 0, and creates a completed Milestone 1 record.
+    The helper
     refuses modified removal candidates or unexpected incoming links, and rolls
     back its changes if documentation checks fail.
 13. Review the final diff, run local checks, and push the cleanup commit to the

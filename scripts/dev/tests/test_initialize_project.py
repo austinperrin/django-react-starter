@@ -84,7 +84,10 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertIn('Would remove: docs/architecture/phase-6-verification.md', preview.stdout)
     self.assertIn('Would remove: docs/roadmap/milestone-1-django-react-starter/README.md',
                   preview.stdout)
-    self.assertIn('Milestone 0 actual start and end:', preview.stdout)
+    self.assertIn('Would create: docs/roadmap/milestone-1-django-react-baseline.md',
+                  preview.stdout)
+    self.assertIn('Milestones 0 and 1 actual start and end:', preview.stdout)
+    self.assertFalse((self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').exists())
     self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
     date_before = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
     self.helper('finish', '--apply')
@@ -98,25 +101,31 @@ class ProjectInitializationTests(unittest.TestCase):
       self.assertFalse((self.root / name).exists())
     self.assertTrue((self.root / 'docs/adr/template.md').exists())
     self.assertTrue((self.root / 'docs/runbooks/template.md').exists())
-    milestone = (self.root / 'docs/roadmap/milestone-0-repository-scaffolding.md').read_text()
-    self.assertIn('This milestone records the completed repository baseline', milestone)
-    self.assertIn('<span style="color: green;">Completed</span>', milestone)
-    self.assertIn('[milestone planning template](milestone-template.md)', milestone)
+    milestone_0 = (self.root / 'docs/roadmap/milestone-0-repository-scaffolding.md').read_text()
+    milestone_1 = (self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').read_text()
+    self.assertIn('This milestone records the completed repository baseline', milestone_0)
+    self.assertIn('milestone-1-django-react-baseline.md', milestone_0)
+    self.assertNotIn('milestone-1-django-react-starter/', milestone_0)
+    self.assertIn('This milestone records the completed application baseline', milestone_1)
+    self.assertIn('Plan the next project goal as Milestone 2', milestone_1)
+    self.assertIn('<span style="color: green;">Completed</span>', milestone_1)
     roadmap = (self.root / 'docs/roadmap/README.md').read_text()
-    milestone_row = next(row for row in roadmap.splitlines()
-                         if row.startswith('| [Milestone 0: Repository Scaffolding]'))
-    cells = [cell.strip() for cell in milestone_row.strip('|').split('|')]
-    self.assertEqual(cells[3], '5–9 weeks')
-    self.assertEqual(cells[4:6], ['Not recorded', 'Not recorded'])
-    self.assertIn(cells[6], (date_before, date_after))
-    self.assertEqual(cells[7], cells[6])
-    self.assertEqual(cells[8], 'Not measured')
+    for number, title, estimate in ((0, 'Repository Scaffolding', '5–9 weeks'),
+                                    (1, 'Django and React Baseline', '3–5 weeks')):
+      milestone_row = next(row for row in roadmap.splitlines()
+                           if row.startswith(f'| [Milestone {number}: {title}]'))
+      cells = [cell.strip() for cell in milestone_row.strip('|').split('|')]
+      self.assertEqual(cells[3], estimate)
+      self.assertEqual(cells[4:6], ['Not recorded', 'Not recorded'])
+      self.assertIn(cells[6], (date_before, date_after))
+      self.assertEqual(cells[7], cells[6])
+      self.assertEqual(cells[8], 'Not measured')
     self.assertNotIn('|  | [Phase 0:', roadmap)
     self.assertNotIn('milestone-1-django-react-starter/', roadmap)
-    self.assertNotIn('austinperrin/scaffolding', milestone)
-    self.assertNotIn('austinperrin/base', milestone)
-    self.assertNotIn('phase-6-verification.md', milestone)
-    self.assertNotIn('PRs #', milestone)
+    self.assertNotIn('austinperrin/scaffolding', milestone_0 + milestone_1)
+    self.assertNotIn('austinperrin/base', milestone_0 + milestone_1)
+    self.assertNotIn('phase-6-verification.md', milestone_0 + milestone_1)
+    self.assertNotIn('PRs #', milestone_0 + milestone_1)
     self.assertNotIn('foundation', (self.root / 'docs/runbooks/configure-github.md').read_text())
     for path in self.root.rglob('*.md'):
       if '.git' not in path.parts:
@@ -142,6 +151,15 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('modified', result.stderr)
     self.assertTrue((self.root / 'scripts/dev/initialize-project.py').exists())
+
+  def test_existing_project_milestone_blocks_finish(self):
+    self.prepare_finish()
+    milestone = self.root / 'docs/roadmap/milestone-1-django-react-baseline.md'
+    milestone.write_text('# Project milestone\n')
+    result = self.helper('finish', '--apply', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('Project milestone already exists', result.stderr)
+    self.assertEqual(milestone.read_text(), '# Project milestone\n')
 
   def test_source_remote_blocks_changes(self):
     for repository in ('austinperrin/base', 'austinperrin/scaffolding',
@@ -222,6 +240,8 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('check-links.sh failed', result.stderr)
     self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/roadmap/milestone-1-django-react-starter/README.md').exists())
+    self.assertFalse((self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').exists())
     self.assertTrue((self.root / 'scripts/dev/initialize-project.py').exists())
     self.assertIn('initialize-repository.md',
                   (self.root / 'docs/runbooks/README.md').read_text())
