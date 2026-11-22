@@ -103,7 +103,7 @@ documentation after setup.
    next project goal through the [roadmap delivery rules](../roadmap/README.md#delivery-rules).
    Record this repository's checks and settings in the initialization PR.
 
-### Enable and Verify the Scaffold
+### Verify and Complete Repository Setup
 
 10. Run [local developer setup](../../scripts/README.md) in the new checkout to
     enable the commit hook, then run the local repository suite:
@@ -119,7 +119,8 @@ documentation after setup.
     [repository settings checklist](../architecture/repository-settings.md).
     Verify workflow permissions, review owners, merge rules, and private reporting.
     A copied workflow file does not activate branch protection.
-12. After the setup and settings are verified, preview the source-only removals:
+12. After the setup and settings are verified, preview the one-time cleanup and
+    roadmap conversion:
 
     ```bash
     python3 scripts/dev/initialize-project.py finish
@@ -131,9 +132,9 @@ documentation after setup.
     the one-time runbook and helper, its tests, the source-only Phase 6
     verification record, and the detailed Milestone 1 planning pages. It updates
     incoming links, retains Milestone 0, and creates a completed Milestone 1 record.
-    The helper
-    refuses modified removal candidates or unexpected incoming links, and rolls
-    back its changes if documentation checks fail.
+    The helper refuses modified files scheduled for replacement or removal and
+    unexpected incoming links. It rolls back its changes if documentation checks
+    fail.
 13. Review the final diff, run local checks, and push the cleanup commit to the
     draft PR. Record the selected history path, contacts, links, local and hosted
     results, settings, and remaining follow-ups. After the updated hosted checks
@@ -148,7 +149,7 @@ CODEOWNERS names eligible reviewers. Search the active identity files for old
 repository URLs and placeholder owners; inspect any matches before merging:
 
 ```bash
-git grep -n -E 'austinperrin/(base|scaffolding)|@your-maintainer|@your-org' \
+git grep -n -E 'austinperrin/(base|scaffolding|django-react-starter)|@your-maintainer|@your-org' \
   -- README.md SECURITY.md CODE_OF_CONDUCT.md .github
 ```
 
@@ -160,20 +161,21 @@ for this project.
 Run `./scripts/ci/check-links.sh` and `./scripts/ci/check-docs.sh` after editing
 navigation and after final cleanup. Record hosted CI and settings verification for
 the new repository in the initialization PR or a linked setup record. Historical
-scaffold results do not replace these checks.
+source-repository results do not replace these checks.
 
 ## Recovery and Escalation
 
-If a contact is unavailable or a link points to the scaffold, correct it before
-publishing the new repository's issue forms or security policy. If settings differ
-from the checklist, record the gap and responsible maintainer; do not claim the
-control is active. Reverse unmerged setup changes on the topic branch and rerun
-the checks. A published reporting address or exposed credential may require the
+If a contact is unavailable or a link points to the source repository, correct
+it before publishing the new repository's issue forms or security policy. If
+settings differ from the checklist, record the gap and responsible maintainer;
+do not claim the control is active. Reverse unmerged setup changes on the topic
+branch and rerun the checks. A published reporting address or exposed credential
+may require the
 [credential-exposure procedure](secret-rotation.md), not only a Git revert.
 
 ## Related Documents
 
 - [GitHub configuration runbook](configure-github.md) - Platform setup and live verification.
 - [Repository ownership](../standards/ownership.md) - Maintainer and review-owner responsibilities.
-- [Repository roadmap](../roadmap/README.md) - Scaffold history and project milestones.
+- [Repository roadmap](../roadmap/README.md) - Baseline history and project milestones.
 - [Documentation standards](../standards/documentation.md) - Project documentation and navigation.
