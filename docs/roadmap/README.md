@@ -13,10 +13,11 @@ Estimates are planning ranges for focused maintainer work, including
 implementation, review, and verification. They are not delivery commitments or
 measured durations. One week means five working days.
 
-Use `YYYY-MM-DD` dates in the `America/Chicago` time zone. For Milestone 0, use
-the repository creation date as its actual start. Use the first commit for each
-phase start and the closing pull request's merge date for its end. When a phase
-has no pull request, use its completion commit. Set planned dates when the owner
+Use `YYYY-MM-DD` dates in the `America/Chicago` time zone. For baseline milestones
+established during repository initialization, record the setup date as both actual
+dates. Use the first commit for each phase start and the closing pull request's
+merge date for its end. When a phase has no pull request, use its completion
+commit. Set planned dates when the owner
 commits to a target. Use `TBD` for a future estimate or date that is still open;
 use `Not recorded` when a historical value was never recorded.
 
@@ -37,6 +38,7 @@ readable without styling.
 | --- | --- |
 | TBD | No planned end date exists yet. |
 | On track | Current work is expected to meet the planned end date. |
+| Not started | Planned work has a target but has not begun. |
 | At risk | The planned end date may be missed; record a recovery action. |
 | Delayed | The planned end date passed and work remains incomplete. |
 | Completed early / on time / late | Compare actual completion with the planned end date. |
@@ -44,24 +46,14 @@ readable without styling.
 
 | Milestone | Stage / Phase | Owner | Estimate | Planned Start | Planned End | Actual Start | Actual End | Variance | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [Milestone 0: Repository Scaffolding](milestone-0-repository-scaffolding.md) |  | Repository maintainers | 5–9 weeks | Not recorded | Not recorded | 2026-11-07 | 2026-11-11 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 0: Initialize repository](milestone-0-repository-scaffolding.md#phase-0-initialize-repository) | Repository maintainers | 0.5–1 day | Not recorded | Not recorded | 2026-11-07 | 2026-11-07 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 1: File hygiene](milestone-0-repository-scaffolding.md#phase-1-file-hygiene) | Repository maintainers | 1–2 days | Not recorded | Not recorded | 2026-11-07 | 2026-11-09 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 2: Documentation and decisions](milestone-0-repository-scaffolding.md#phase-2-documentation-and-decisions) | Repository maintainers | 2–4 days | Not recorded | Not recorded | 2026-11-07 | 2026-11-09 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 3: Policies and contribution](milestone-0-repository-scaffolding.md#phase-3-policies-and-contribution) | Repository maintainers | 3–5 days | Not recorded | Not recorded | 2026-11-08 | 2026-11-09 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 4: Open project decisions](milestone-0-repository-scaffolding.md#phase-4-open-project-decisions) | Repository maintainers | 1–2 days | Not recorded | Not recorded | 2026-11-08 | 2026-11-09 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 5: Local developer tooling](milestone-0-repository-scaffolding.md#phase-5-local-developer-tooling) | Repository maintainers | 2–4 days | Not recorded | Not recorded | 2026-11-08 | 2026-11-09 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 6: Automated enforcement](milestone-0-repository-scaffolding.md#phase-6-automated-enforcement) | Repository maintainers | 5–10 days | Not recorded | Not recorded | 2026-11-08 | 2026-11-09 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 7: Maintenance procedures](milestone-0-repository-scaffolding.md#phase-7-maintenance-procedures) | Repository maintainers | 3–5 days | Not recorded | Not recorded | 2026-11-09 | 2026-11-10 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 8: Project setup guidance](milestone-0-repository-scaffolding.md#phase-8-project-setup-guidance) | Repository maintainers | 3–5 days | Not recorded | Not recorded | 2026-11-10 | 2026-11-10 | Not measured | <span style="color: green;">Completed</span> |
-|  | [Phase 9: Assembled verification](milestone-0-repository-scaffolding.md#phase-9-assembled-verification) | Repository maintainers | 2–4 days | Not recorded | Not recorded | 2026-11-10 | 2026-11-11 | Not measured | <span style="color: green;">Completed</span> |
-| [Milestone 1: Django and React starter](milestone-1-django-react-starter/README.md) |  | Repository maintainers | 3–5 weeks | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 1: Own the starter identity](milestone-1-django-react-starter/phase-1-starter-identity.md) | Repository maintainers | 1–2 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 2: Record stack decisions](milestone-1-django-react-starter/phase-2-stack-decisions.md) | Repository maintainers | 2–4 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 3: Build the backend baseline](milestone-1-django-react-starter/phase-3-backend.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 4: Build the frontend baseline](milestone-1-django-react-starter/phase-4-frontend.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 5: Integrate checks and operations](milestone-1-django-react-starter/phase-5-integration.md) | Repository maintainers | 3–5 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
-|  | [Phase 6: Verify adoption](milestone-1-django-react-starter/phase-6-adoption.md) | Repository maintainers | 2–4 days | TBD | TBD | TBD | TBD | TBD | <span style="color: #6b7280;">Planned</span> |
+| [Milestone 0: Repository Scaffolding](milestone-0-repository-scaffolding.md) |  | Repository maintainers | 5–9 weeks | Not recorded | Not recorded | 2026-11-22 | 2026-11-22 | Not measured | <span style="color: green;">Completed</span> |
+| [Milestone 1: Django and React starter](milestone-1-django-react-starter/README.md) |  | Repository maintainers | 3–5 weeks | 2026-11-21 | 2026-12-22 | 2026-11-21 | TBD | On track | <span style="color: #ca8a04;">In Progress</span> |
+|  | [Phase 1: Own the starter identity](milestone-1-django-react-starter/phase-1-starter-identity.md) | Repository maintainers | 1–2 days | 2026-11-21 | 2026-11-24 | 2026-11-21 | TBD | On track | <span style="color: #ca8a04;">In Progress</span> |
+|  | [Phase 2: Record stack decisions](milestone-1-django-react-starter/phase-2-stack-decisions.md) | Repository maintainers | 2–4 days | 2026-11-25 | 2026-12-01 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 3: Build the backend baseline](milestone-1-django-react-starter/phase-3-backend.md) | Repository maintainers | 3–5 days | 2026-12-02 | 2026-12-04 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 4: Build the frontend baseline](milestone-1-django-react-starter/phase-4-frontend.md) | Repository maintainers | 3–5 days | 2026-12-07 | 2026-12-09 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 5: Integrate checks and operations](milestone-1-django-react-starter/phase-5-integration.md) | Repository maintainers | 3–5 days | 2026-12-10 | 2026-12-16 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
+|  | [Phase 6: Verify adoption](milestone-1-django-react-starter/phase-6-adoption.md) | Repository maintainers | 2–4 days | 2026-12-17 | 2026-12-22 | TBD | TBD | Not started | <span style="color: #6b7280;">Planned</span> |
 
 Milestone rows summarize their phase work. Link each milestone and phase to its
 owning page or section. Record the accountable owner in each row; assign an owner

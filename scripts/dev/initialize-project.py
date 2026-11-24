@@ -11,20 +11,18 @@ from zoneinfo import ZoneInfo
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE_REPOSITORY = 'austinperrin/scaffolding'
-SOURCE_ALIASES = (SOURCE_REPOSITORY, 'austinperrin/base')
+SOURCE_REPOSITORY = 'austinperrin/django-react-starter'
+SOURCE_ALIASES = (SOURCE_REPOSITORY, 'austinperrin/scaffolding', 'austinperrin/base')
 SOURCE_URL = f'https://github.com/{SOURCE_REPOSITORY}'
 SOURCE_EMAIL = 'perrinaustin@gmail.com'
 
 URL_FILES = {
   '.github/ISSUE_TEMPLATE/config.yml': 1,
-  '.github/ISSUE_TEMPLATE/bug_report.yml': 1,
-  '.github/ISSUE_TEMPLATE/feature_request.yml': 1,
-  '.github/PULL_REQUEST_TEMPLATE.md': 2,
 }
 EMAIL_FILES = ('SECURITY.md', 'CODE_OF_CONDUCT.md')
+PROJECT_MILESTONE_PATH = 'docs/roadmap/milestone-1-django-react-baseline.md'
 REMOVALS = (
-  'docs/architecture/phase-6-verification.md',
+  'docs/architecture/starter-verification.md',
   'docs/roadmap/milestone-1-django-react-starter/README.md',
   'docs/roadmap/milestone-1-django-react-starter/phase-1-starter-identity.md',
   'docs/roadmap/milestone-1-django-react-starter/phase-2-stack-decisions.md',
@@ -37,47 +35,46 @@ REMOVALS = (
   'scripts/dev/tests/test_initialize_project.py',
 )
 
-PROJECT_MILESTONE = '''# Milestone 0: Repository Scaffolding
+PROJECT_MILESTONE_1 = '''# Milestone 1: Django and React Baseline
 
-[Docs](../README.md) > [Roadmap](README.md) > Milestone 0
+[Docs](../README.md) > [Roadmap](README.md) > Milestone 1
 
-* **Status**: <span style="color: green;">Completed</span>
-* **Owner**: Repository maintainers
-* **Target**: No recorded target
-* **Scope**: Establish the repository's identity, policies, documentation, tooling,
-  and maintenance practices.
+- **Outcome:** Establish the Django REST Framework API and React/Vite TypeScript
+  application baseline with local setup, checks, and operational guidance.
+- **Owner and schedule:** [Roadmap schedule](README.md#schedule).
+- **Status:** <span style="color: green;">Completed</span>
+- **Target:** No recorded target.
 
-This milestone records the completed repository baseline. Its schedule dates
-mark when this baseline was established; the estimate describes the typical
-effort to build these practices. Plan the next project goal as Milestone 1 using the
-[milestone planning template](milestone-template.md).
+This milestone records the completed application baseline. Its schedule dates
+mark when this baseline was initialized; the estimate describes the typical
+effort to build these components. Plan the next project goal as Milestone 2 using
+the [milestone planning template](milestone-template.md).
 
 ## Completed Scope
 
 | Area | Result |
 | :--- | :--- |
-| Identity and file hygiene | The root README, license, reporting contacts, ownership guidance, editor settings, Git attributes, and exclusions are in place. |
-| Documentation and decisions | The documentation hub, standards, and Architecture Decision Records (ADRs) provide navigation and record established and open choices. |
-| Contribution and security | Contribution guidance, issue and pull request forms, security reporting, and the Code of Conduct are available. |
-| Local and hosted checks | Developer helpers, repository checks, and GitHub workflows provide the initial validation paths. |
-| Maintenance | Runbooks cover issue triage, dependencies, releases, credential exposure, and GitHub settings. |
+| Backend | A Django REST Framework API provides the initial service structure and a verified local start path. |
+| Frontend | A React/Vite TypeScript application provides the initial user interface structure and local API connection. |
+| Decisions | Architecture Decision Records (ADRs) capture the approved stack and open project choices. |
+| Verification | Local and hosted checks cover the application baseline alongside repository checks. |
+| Operations | Runbooks describe local setup and the maintenance paths established for these components. |
 
-## Verification
+## Verification and Handoff
 
 The project setup pull request records this repository's local and hosted checks,
-reporting contacts, and live settings. Recheck GitHub controls when ownership,
-workflows, or review policy changes by following the
-[GitHub configuration runbook](../runbooks/configure-github.md). A copied workflow
-does not activate repository settings on its own.
+reporting contacts, and live settings. Recheck GitHub controls through the
+[GitHub configuration runbook](../runbooks/configure-github.md). Copied workflow
+files alone do not activate repository settings.
 
-[ADR-0002](../adr/0002-secret-management.md) and
-[ADR-0004](../adr/0004-release-versioning.md) remain Proposed. Decide their
-outcomes when the project has the relevant requirements and decision maker.
+Review the [decision log](../adr/README.md) for approved baseline decisions and
+choices the project still needs to make.
 
 ## Related Documents
 
-- [Roadmap index](README.md) - Plan Milestone 1 and later project work.
-- [Documentation hub](../README.md) - Find standards, decisions, and runbooks.
+- [Roadmap index](README.md) - Plan Milestone 2 and later project work.
+- [Milestone 0](milestone-0-repository-scaffolding.md) - Repository practices supporting this baseline.
+- [Architecture Decision Records (ADRs)](../adr/README.md) - Approved and open choices.
 - [Repository settings](../architecture/repository-settings.md) - Controls to verify for this repository.
 '''
 
@@ -101,7 +98,7 @@ def repository_root():
       if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', name):
         break
       if name.lower() in SOURCE_ALIASES:
-        raise ValueError('The origin remote still points to the foundation repository.')
+        raise ValueError('The origin remote still points to a source repository.')
       return name
   raise ValueError('The origin remote must identify the new GitHub repository.')
 
@@ -125,15 +122,18 @@ def validate_email(value):
     raise ValueError('Enter a single email address without spaces or markup.')
 
 
-def configure_plan(repository, security_email, conduct_email):
+def configure_plan(repository, security_email, conduct_email, retain_source_contact=False):
   if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
     raise ValueError('Use OWNER/REPOSITORY for --repository.')
   if repository.lower() != repository_root().lower():
     raise ValueError('--repository must match the origin remote.')
   validate_email(security_email)
   validate_email(conduct_email)
-  if SOURCE_EMAIL in (security_email, conduct_email):
-    raise ValueError('Replace the foundation reporting address with a project contact.')
+  retains_contact = SOURCE_EMAIL in (security_email, conduct_email)
+  if retains_contact and not retain_source_contact:
+    raise ValueError('Use --retain-source-contact to keep the starter reporting address.')
+  if retain_source_contact and not retains_contact:
+    raise ValueError('--retain-source-contact requires a matching reporting address.')
   destination = f'https://github.com/{repository}'
   plan = {
     name: replace_count(name, SOURCE_URL, destination, count)
@@ -141,7 +141,9 @@ def configure_plan(repository, security_email, conduct_email):
   }
   for name, address in (('SECURITY.md', security_email),
                         ('CODE_OF_CONDUCT.md', conduct_email)):
-    plan[name] = replace_count(name, SOURCE_EMAIL, address, 2)
+    updated = replace_count(name, SOURCE_EMAIL, address, 2)
+    if updated != read_file(name):
+      plan[name] = updated
   return plan
 
 
@@ -153,7 +155,7 @@ def tracked_and_unchanged(name):
   read_file(name)
 
 
-def finish_plan(setup_date):
+def finish_plan(setup_date, retain_source_contact=False):
   repository = repository_root()
   for name in REMOVALS:
     tracked_and_unchanged(name)
@@ -162,9 +164,11 @@ def finish_plan(setup_date):
     content = read_file(name)
     if SOURCE_URL in content or content.count(destination) != count:
       raise ValueError(f'Confirm the new repository links in {name} before finishing.')
-  for name in EMAIL_FILES:
-    if SOURCE_EMAIL in read_file(name):
-      raise ValueError('Replace source reporting contacts before finishing setup.')
+  retains_contact = any(SOURCE_EMAIL in read_file(name) for name in EMAIL_FILES)
+  if retains_contact and not retain_source_contact:
+    raise ValueError('Use --retain-source-contact to keep the starter reporting address.')
+  if retain_source_contact and not retains_contact:
+    raise ValueError('--retain-source-contact requires a matching reporting address.')
   readme = read_file('README.md')
   if ('# Repository Scaffolding' in readme or 'initialize-repository.md' in readme
       or any(alias in readme for alias in SOURCE_ALIASES)):
@@ -175,19 +179,24 @@ def finish_plan(setup_date):
 
   plan = {}
   name = 'docs/architecture/README.md'
-  row = '| [Phase 6 verification record](phase-6-verification.md) | Historical foundation results and remaining verification cases |\n'
+  row = '| [Starter repository verification](starter-verification.md) | This repository\'s settings, hosted checks, and remaining verification cases |\n'
   plan[name] = replace_count(name, row, '', 1)
 
   name = 'docs/roadmap/milestone-0-repository-scaffolding.md'
   tracked_and_unchanged(name)
-  plan[name] = PROJECT_MILESTONE
+  plan[name] = replace_count(name, 'milestone-1-django-react-starter/README.md',
+                             'milestone-1-django-react-baseline.md', 2)
+
+  if (ROOT / PROJECT_MILESTONE_PATH).exists() or (ROOT / PROJECT_MILESTONE_PATH).is_symlink():
+    raise ValueError(f'Project milestone already exists: {PROJECT_MILESTONE_PATH}')
+  plan[PROJECT_MILESTONE_PATH] = PROJECT_MILESTONE_1
 
   name = 'docs/roadmap/README.md'
   tracked_and_unchanged(name)
   content = read_file(name)
   source_row = ('| [Milestone 0: Repository Scaffolding](milestone-0-repository-scaffolding.md) '
                 '|  | Repository maintainers | 5–9 weeks | Not recorded | Not recorded '
-                '| 2026-11-07 | 2026-11-11 | Not measured '
+                '| 2026-11-22 | 2026-11-22 | Not measured '
                 '| <span style="color: green;">Completed</span> |')
   project_row = ('| [Milestone 0: Repository Scaffolding](milestone-0-repository-scaffolding.md) '
                  '|  | Repository maintainers | 5–9 weeks | Not recorded | Not recorded '
@@ -197,21 +206,30 @@ def finish_plan(setup_date):
     raise ValueError('The source roadmap schedule changed; review it manually.')
   content = content.replace(source_row, project_row)
   rows = content.splitlines(keepends=True)
-  phase_rows = [row for row in rows if row.startswith('|  | [Phase ')
-                and '(milestone-0-repository-scaffolding.md#phase-' in row]
-  if len(phase_rows) != 10 or any(
-      sum(row.startswith(f'|  | [Phase {number}: ') for row in phase_rows) != 1
-      for number in range(10)):
+  if any(row.startswith('|  | [Phase ')
+         and '(milestone-0-repository-scaffolding.md#phase-' in row for row in rows):
     raise ValueError('The source roadmap phases changed; review them manually.')
-  starter_rows = [row for row in rows if
-                  row.startswith('| [Milestone 1: Django and React starter]') or
-                  '(milestone-1-django-react-starter/' in row]
-  if len(starter_rows) != 7:
+  milestone_rows = [row for row in rows if row.startswith('| [Milestone 1: Django and React starter]')]
+  phase_rows = [row for row in rows if row.startswith('|  | [Phase ')
+                and '(milestone-1-django-react-starter/' in row]
+  if len(milestone_rows) != 1 or len(phase_rows) != 6:
     raise ValueError('The starter roadmap rows changed; review them manually.')
-  plan[name] = ''.join(row for row in rows if row not in phase_rows + starter_rows)
+  completed = '<span style="color: green;">Completed</span>'
+  cells_by_row = [[cell.strip() for cell in row.strip().strip('|').split('|')]
+                  for row in milestone_rows + phase_rows]
+  if any(len(cells) != 10 or cells[9] != completed or
+         not re.fullmatch(r'\d{4}-\d{2}-\d{2}', cells[7])
+         for cells in cells_by_row):
+    raise ValueError('Complete Milestone 1 and each phase with actual end dates before finishing.')
+  project_row = ('| [Milestone 1: Django and React Baseline](milestone-1-django-react-baseline.md) '
+                 '|  | Repository maintainers | 3–5 weeks | Not recorded | Not recorded '
+                 f'| {setup_date} | {setup_date} | Not measured '
+                 '| <span style="color: green;">Completed</span> |\n')
+  plan[name] = ''.join(project_row if row in milestone_rows else row
+                       for row in rows if row not in phase_rows)
 
   name = 'docs/runbooks/README.md'
-  row = '| [Initialize a project repository](initialize-repository.md) | Turn the scaffold into a new project repository |\n'
+  row = '| [Initialize a project repository](initialize-repository.md) | Turn this starter into a new project repository |\n'
   plan[name] = replace_count(name, row, '', 1)
 
   name = 'scripts/README.md'
@@ -220,13 +238,16 @@ def finish_plan(setup_date):
   section = (
     '## One-Time Project Initialization\n\n'
     'The [initialization runbook](../docs/runbooks/initialize-repository.md) owns the\n'
-    'setup order. `initialize-project.py configure` previews fixed source URL and\n'
-    'reporting-contact replacements; `finish` previews a project-owned Milestone 0\n'
-    'record and removal of one-time files. Each stage requires `--apply` to write\n'
-    'changes. The helper checks the destination GitHub remote, refuses modified\n'
-    'removal candidates, and checks documentation after applying changes. It leaves\n'
-    'the root README, review owners, ADR outcomes, and live repository settings for\n'
-    'the maintainer to resolve.\n\n'
+    'setup order. `initialize-project.py configure` previews the issue chooser URL and\n'
+    'reporting-contact replacements; `finish` previews completed Milestone 0 and 1\n'
+    'dates, a concise Milestone 1 record, and removal of one-time files. Each stage\n'
+    'requires `--apply` to write changes. The helper checks the destination GitHub\n'
+    'remote, refuses modified removal candidates, and checks documentation after\n'
+    'applying changes. `finish` also requires Milestone 1 and all its phases to show\n'
+    'Completed status and actual end dates in the roadmap. The helper leaves the root\n'
+    'README, review owners, ADR outcomes, and live repository settings for the\n'
+    'maintainer to resolve. To keep the monitored starter reporting address, pass\n'
+    '`--retain-source-contact` to both `configure` and `finish`.\n\n'
   )
   if content.count(section) != 1:
     raise ValueError('The script-reference setup section changed; review it manually.')
@@ -263,7 +284,7 @@ def finish_plan(setup_date):
       if content is None and name in plan:
         continue
       content = content if content is not None else path.read_text(encoding='utf-8')
-      if 'phase-6-verification.md' in content:
+      if 'starter-verification.md' in content:
         raise ValueError(f'An incoming verification-record link remains in {name}.')
       if 'initialize-repository.md' in content:
         raise ValueError(f'An incoming initialization-runbook link remains in {name}.')
@@ -273,11 +294,15 @@ def finish_plan(setup_date):
 
 
 def apply_plan(plan):
-  originals = {name: (ROOT / name).read_bytes() for name in plan}
+  originals = {
+    name: (ROOT / name).read_bytes() if (ROOT / name).exists() else None
+    for name in plan
+  }
   try:
     for name, content in plan.items():
       path = ROOT / name
-      if path.read_bytes() != originals[name]:
+      current = path.read_bytes() if path.exists() else None
+      if path.is_symlink() or current != originals[name]:
         raise ValueError(f'{name} changed during setup; no further files were updated.')
       if content is None:
         path.unlink()
@@ -291,7 +316,13 @@ def apply_plan(plan):
         raise ValueError(f'{check} failed after setup:\n{result.stdout}{result.stderr}')
   except (OSError, ValueError):
     for name, content in originals.items():
-      (ROOT / name).write_bytes(content)
+      path = ROOT / name
+      if path.is_symlink():
+        path.unlink()
+      if content is None:
+        path.unlink(missing_ok=True)
+      else:
+        path.write_bytes(content)
     raise
 
 
@@ -300,22 +331,28 @@ def main():
     raise ValueError('Python 3.9 or newer is required.')
   parser = argparse.ArgumentParser(description=__doc__)
   commands = parser.add_subparsers(dest='command', required=True)
-  configure = commands.add_parser('configure', help='Replace source URLs and reporting contacts')
+  configure = commands.add_parser('configure', help='Replace the issue chooser URL and reporting contacts')
   configure.add_argument('--repository', required=True, help='New GitHub OWNER/REPOSITORY')
   configure.add_argument('--security-email', required=True)
   configure.add_argument('--conduct-email', required=True)
+  configure.add_argument('--retain-source-contact', action='store_true',
+                         help='Explicitly keep the monitored starter reporting address')
   configure.add_argument('--apply', action='store_true', help='Apply the previewed changes')
   finish = commands.add_parser('finish', help='Remove one-time source records and setup files')
+  finish.add_argument('--retain-source-contact', action='store_true',
+                      help='Confirm the monitored starter reporting address is still intended')
   finish.add_argument('--apply', action='store_true', help='Apply the previewed changes')
   args = parser.parse_args()
   if args.command == 'configure':
-    plan = configure_plan(args.repository, args.security_email, args.conduct_email)
+    plan = configure_plan(args.repository, args.security_email, args.conduct_email,
+                          args.retain_source_contact)
   else:
     setup_date = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
-    plan = finish_plan(setup_date)
-    print(f'Milestone 0 actual start and end: {setup_date} (America/Chicago)')
+    plan = finish_plan(setup_date, args.retain_source_contact)
+    print(f'Milestones 0 and 1 actual start and end: {setup_date} (America/Chicago)')
   for name, content in plan.items():
-    action = 'remove' if content is None else 'update'
+    action = ('remove' if content is None else
+              'create' if not (ROOT / name).exists() else 'update')
     print(f'{"Will" if args.apply else "Would"} {action}: {name}')
   if args.apply:
     apply_plan(plan)

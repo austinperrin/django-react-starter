@@ -57,7 +57,27 @@ class ProjectInitializationTests(unittest.TestCase):
                        '--conduct-email', 'conduct@example.test',
                        *arguments, check=check)
 
-  def prepare_finish(self):
+  def complete_milestone_1(self, record_end=True):
+    path = self.root / 'docs/roadmap/README.md'
+    rows = []
+    for row in path.read_text().splitlines(keepends=True):
+      if (row.startswith('| [Milestone 1: Django and React starter]') or
+          (row.startswith('|  | [Phase ') and 'milestone-1-django-react-starter/' in row)):
+        cells = [cell.strip() for cell in row.strip().strip('|').split('|')]
+        cells[6] = '2026-11-22'
+        if record_end:
+          cells[7] = '2026-11-22'
+        cells[8] = 'Completed early'
+        cells[9] = '<span style="color: green;">Completed</span>'
+        row = '| ' + ' | '.join(cells) + ' |\n'
+      rows.append(row)
+    path.write_text(''.join(rows))
+    self.git('add', 'docs/roadmap/README.md')
+    self.git('commit', '-qm', 'test: record completed application baseline')
+
+  def prepare_finish(self, complete=True, record_end=True):
+    if complete:
+      self.complete_milestone_1(record_end=record_end)
     self.configure('--apply')
     (self.root / 'README.md').write_text('# Example Project\n\nProject overview.\n')
     (self.root / '.github/CODEOWNERS').write_text(
@@ -72,20 +92,27 @@ class ProjectInitializationTests(unittest.TestCase):
     self.prepare_finish()
     self.assertIn('https://github.com/example/project/security/policy',
                   (self.root / '.github/ISSUE_TEMPLATE/config.yml').read_text())
+    self.assertIn('../blob/HEAD/SECURITY.md',
+                  (self.root / '.github/ISSUE_TEMPLATE/bug_report.yml').read_text())
+    self.assertIn('../blob/HEAD/CONTRIBUTING.md',
+                  (self.root / '.github/PULL_REQUEST_TEMPLATE.md').read_text())
     self.assertIn('security@example.test',
                   (self.root / 'SECURITY.md').read_text())
     self.assertIn('conduct@example.test',
                   (self.root / 'CODE_OF_CONDUCT.md').read_text())
     preview = self.helper('finish')
-    self.assertIn('Would remove: docs/architecture/phase-6-verification.md', preview.stdout)
+    self.assertIn('Would remove: docs/architecture/starter-verification.md', preview.stdout)
     self.assertIn('Would remove: docs/roadmap/milestone-1-django-react-starter/README.md',
                   preview.stdout)
-    self.assertIn('Milestone 0 actual start and end:', preview.stdout)
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertIn('Would create: docs/roadmap/milestone-1-django-react-baseline.md',
+                  preview.stdout)
+    self.assertIn('Milestones 0 and 1 actual start and end:', preview.stdout)
+    self.assertFalse((self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
     date_before = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
     self.helper('finish', '--apply')
     date_after = datetime.now(ZoneInfo('America/Chicago')).date().isoformat()
-    for name in ('docs/architecture/phase-6-verification.md',
+    for name in ('docs/architecture/starter-verification.md',
                  'docs/roadmap/milestone-1-django-react-starter/README.md',
                  'docs/roadmap/milestone-1-django-react-starter/phase-6-adoption.md',
                  'docs/runbooks/initialize-repository.md',
@@ -94,25 +121,31 @@ class ProjectInitializationTests(unittest.TestCase):
       self.assertFalse((self.root / name).exists())
     self.assertTrue((self.root / 'docs/adr/template.md').exists())
     self.assertTrue((self.root / 'docs/runbooks/template.md').exists())
-    milestone = (self.root / 'docs/roadmap/milestone-0-repository-scaffolding.md').read_text()
-    self.assertIn('This milestone records the completed repository baseline', milestone)
-    self.assertIn('<span style="color: green;">Completed</span>', milestone)
-    self.assertIn('[milestone planning template](milestone-template.md)', milestone)
+    milestone_0 = (self.root / 'docs/roadmap/milestone-0-repository-scaffolding.md').read_text()
+    milestone_1 = (self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').read_text()
+    self.assertIn('This milestone records the completed repository baseline', milestone_0)
+    self.assertIn('milestone-1-django-react-baseline.md', milestone_0)
+    self.assertNotIn('milestone-1-django-react-starter/', milestone_0)
+    self.assertIn('This milestone records the completed application baseline', milestone_1)
+    self.assertIn('Plan the next project goal as Milestone 2', milestone_1)
+    self.assertIn('<span style="color: green;">Completed</span>', milestone_1)
     roadmap = (self.root / 'docs/roadmap/README.md').read_text()
-    milestone_row = next(row for row in roadmap.splitlines()
-                         if row.startswith('| [Milestone 0: Repository Scaffolding]'))
-    cells = [cell.strip() for cell in milestone_row.strip('|').split('|')]
-    self.assertEqual(cells[3], '5–9 weeks')
-    self.assertEqual(cells[4:6], ['Not recorded', 'Not recorded'])
-    self.assertIn(cells[6], (date_before, date_after))
-    self.assertEqual(cells[7], cells[6])
-    self.assertEqual(cells[8], 'Not measured')
+    for number, title, estimate in ((0, 'Repository Scaffolding', '5–9 weeks'),
+                                    (1, 'Django and React Baseline', '3–5 weeks')):
+      milestone_row = next(row for row in roadmap.splitlines()
+                           if row.startswith(f'| [Milestone {number}: {title}]'))
+      cells = [cell.strip() for cell in milestone_row.strip('|').split('|')]
+      self.assertEqual(cells[3], estimate)
+      self.assertEqual(cells[4:6], ['Not recorded', 'Not recorded'])
+      self.assertIn(cells[6], (date_before, date_after))
+      self.assertEqual(cells[7], cells[6])
+      self.assertEqual(cells[8], 'Not measured')
     self.assertNotIn('|  | [Phase 0:', roadmap)
     self.assertNotIn('milestone-1-django-react-starter/', roadmap)
-    self.assertNotIn('austinperrin/scaffolding', milestone)
-    self.assertNotIn('austinperrin/base', milestone)
-    self.assertNotIn('phase-6-verification.md', milestone)
-    self.assertNotIn('PRs #', milestone)
+    self.assertNotIn('austinperrin/scaffolding', milestone_0 + milestone_1)
+    self.assertNotIn('austinperrin/base', milestone_0 + milestone_1)
+    self.assertNotIn('starter-verification.md', milestone_0 + milestone_1)
+    self.assertNotIn('PRs #', milestone_0 + milestone_1)
     self.assertNotIn('foundation', (self.root / 'docs/runbooks/configure-github.md').read_text())
     for path in self.root.rglob('*.md'):
       if '.git' not in path.parts:
@@ -123,12 +156,26 @@ class ProjectInitializationTests(unittest.TestCase):
 
   def test_modified_removal_candidate_blocks_finish(self):
     self.prepare_finish()
-    record = self.root / 'docs/architecture/phase-6-verification.md'
+    record = self.root / 'docs/architecture/starter-verification.md'
     record.write_text(record.read_text() + '\nProject note.\n')
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('modified', result.stderr)
     self.assertTrue(record.exists())
+
+  def test_incomplete_milestone_blocks_finish(self):
+    self.prepare_finish(complete=False)
+    result = self.helper('finish', '--apply', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('Complete Milestone 1 and each phase', result.stderr)
+    self.assertTrue((self.root / 'docs/roadmap/milestone-1-django-react-starter/README.md').exists())
+
+  def test_completed_status_without_actual_end_dates_blocks_finish(self):
+    self.prepare_finish(record_end=False)
+    result = self.helper('finish', '--apply', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('actual end dates', result.stderr)
+    self.assertTrue((self.root / 'docs/roadmap/milestone-1-django-react-starter/README.md').exists())
 
   def test_modified_milestone_blocks_replacement(self):
     self.prepare_finish()
@@ -139,14 +186,70 @@ class ProjectInitializationTests(unittest.TestCase):
     self.assertIn('modified', result.stderr)
     self.assertTrue((self.root / 'scripts/dev/initialize-project.py').exists())
 
+  def test_existing_project_milestone_blocks_finish(self):
+    self.prepare_finish()
+    milestone = self.root / 'docs/roadmap/milestone-1-django-react-baseline.md'
+    milestone.write_text('# Project milestone\n')
+    result = self.helper('finish', '--apply', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('Project milestone already exists', result.stderr)
+    self.assertEqual(milestone.read_text(), '# Project milestone\n')
+
   def test_source_remote_blocks_changes(self):
-    for repository in ('austinperrin/base', 'austinperrin/scaffolding'):
+    for repository in ('austinperrin/base', 'austinperrin/scaffolding',
+                       'austinperrin/django-react-starter'):
       with self.subTest(repository=repository):
         self.git('remote', 'set-url', 'origin', f'https://github.com/{repository}.git')
         result = self.configure('--apply', check=False)
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn('foundation repository', result.stderr)
+        self.assertIn('source repository', result.stderr)
         self.assertEqual(self.git('status', '--porcelain').stdout, '')
+
+  def test_retaining_source_contact_requires_explicit_flag(self):
+    result = self.helper('configure', '--repository', 'example/project',
+                         '--security-email', 'perrinaustin@gmail.com',
+                         '--conduct-email', 'conduct@example.test',
+                         '--apply', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('Use --retain-source-contact', result.stderr)
+    self.assertEqual(self.git('status', '--porcelain').stdout, '')
+
+  def test_any_owner_can_explicitly_keep_monitored_contacts(self):
+    self.complete_milestone_1()
+    result = self.helper('configure', '--repository', 'example/project',
+                         '--security-email', 'perrinaustin@gmail.com',
+                         '--conduct-email', 'perrinaustin@gmail.com',
+                         '--retain-source-contact', '--apply')
+    self.assertIn('Setup changes applied', result.stdout)
+    (self.root / 'README.md').write_text('# New Project\n\nProject overview.\n')
+    (self.root / '.github/CODEOWNERS').write_text(
+      '# Project owners\n* @example\n/.github/CODEOWNERS @example\n')
+    refused = self.helper('finish', check=False)
+    self.assertNotEqual(refused.returncode, 0)
+    self.assertIn('Use --retain-source-contact', refused.stderr)
+    preview = self.helper('finish', '--retain-source-contact')
+    self.assertIn('Would remove: docs/runbooks/initialize-repository.md', preview.stdout)
+    self.helper('finish', '--retain-source-contact', '--apply')
+    self.assertIn('perrinaustin@gmail.com', (self.root / 'SECURITY.md').read_text())
+
+  def test_same_owner_can_explicitly_keep_monitored_contact(self):
+    self.git('remote', 'set-url', 'origin', 'https://github.com/austinperrin/new-project.git')
+    preview = self.helper('configure', '--repository', 'austinperrin/new-project',
+                          '--security-email', 'perrinaustin@gmail.com',
+                          '--conduct-email', 'conduct@example.test',
+                          '--retain-source-contact')
+    self.assertNotIn('Would update: SECURITY.md', preview.stdout)
+    result = self.helper('configure', '--repository', 'austinperrin/new-project',
+                         '--security-email', 'perrinaustin@gmail.com',
+                         '--conduct-email', 'conduct@example.test',
+                         '--retain-source-contact', '--apply')
+    self.assertIn('Setup changes applied', result.stdout)
+
+  def test_unneeded_retain_contact_flag_is_rejected(self):
+    result = self.configure('--retain-source-contact', check=False)
+    self.assertNotEqual(result.returncode, 0)
+    self.assertIn('requires a matching reporting address', result.stderr)
+    self.assertEqual(self.git('status', '--porcelain').stdout, '')
 
   def test_example_owners_block_finish(self):
     self.configure('--apply')
@@ -154,7 +257,7 @@ class ProjectInitializationTests(unittest.TestCase):
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('CODEOWNERS', result.stderr)
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
 
   def test_wrong_destination_link_blocks_finish(self):
     self.prepare_finish()
@@ -163,7 +266,7 @@ class ProjectInitializationTests(unittest.TestCase):
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('Confirm the new repository links', result.stderr)
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
 
   def test_failed_link_check_restores_all_cleanup_candidates(self):
     self.prepare_finish()
@@ -171,7 +274,9 @@ class ProjectInitializationTests(unittest.TestCase):
     result = self.helper('finish', '--apply', check=False)
     self.assertNotEqual(result.returncode, 0)
     self.assertIn('check-links.sh failed', result.stderr)
-    self.assertTrue((self.root / 'docs/architecture/phase-6-verification.md').exists())
+    self.assertTrue((self.root / 'docs/architecture/starter-verification.md').exists())
+    self.assertTrue((self.root / 'docs/roadmap/milestone-1-django-react-starter/README.md').exists())
+    self.assertFalse((self.root / 'docs/roadmap/milestone-1-django-react-baseline.md').exists())
     self.assertTrue((self.root / 'scripts/dev/initialize-project.py').exists())
     self.assertIn('initialize-repository.md',
                   (self.root / 'docs/runbooks/README.md').read_text())

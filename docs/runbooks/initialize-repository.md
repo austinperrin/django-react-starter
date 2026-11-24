@@ -4,9 +4,9 @@
 
 ## Objective and Triggers
 
-Use this procedure when starting a new project from this repository's scaffold.
+Use this procedure when starting a new project from this Django and React starter.
 It establishes the new repository's identity, reporting contacts, ownership, local
-checks, and setup evidence. To improve the scaffold itself, use the
+checks, and setup evidence. To improve the starter itself, use the
 [contribution guide](../../CONTRIBUTING.md) instead.
 
 This procedure is for initial setup. Keep the [roadmap](../roadmap/README.md),
@@ -19,8 +19,8 @@ documentation after setup.
   permission to create it and configure its settings.
 - Identify a maintainer, a private security-reporting contact, and a conduct-reporting
   contact. Confirm both contacts are monitored before publishing them.
-- Use Git and a clean copy of the scaffold's reviewed default branch. Decide
-  whether to start with a new history or retain the scaffold's Git history.
+- Use Git and a clean copy of the starter's reviewed default branch. Decide
+  whether to start with a new history or retain the starter's Git history.
 - Review the [repository ownership standard](../standards/ownership.md) and the
   [repository settings checklist](../architecture/repository-settings.md). Access
   to GitHub settings and review-owner accounts is needed for their activation.
@@ -30,18 +30,18 @@ documentation after setup.
 ### Create the New Repository
 
 1. For a new history, select **Use this template > Create a new repository** when
-   template creation is enabled for the scaffold. Enter the new owner, name,
+   template creation is enabled for the starter. Enter the new owner, name,
    description, and visibility. Copy the default branch only. Clone the new
    repository and confirm `git remote -v` points to it. GitHub's
    [template instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
    describe the current interface and how template history differs from a fork.
-2. If you need to retain the scaffold's history, clone its reviewed default
+2. If you need to retain the starter's history, clone its reviewed default
    branch and create an empty destination repository. Change the clone's `origin`
    URL to the destination before pushing. Replace `PROJECT_DIRECTORY`, `OWNER`,
    and `REPOSITORY` in these commands with the new project's values:
 
    ```bash
-   git clone https://github.com/austinperrin/scaffolding.git PROJECT_DIRECTORY
+   git clone https://github.com/austinperrin/django-react-starter.git PROJECT_DIRECTORY
    cd PROJECT_DIRECTORY
    git remote set-url origin https://github.com/OWNER/REPOSITORY.git
    git remote -v
@@ -55,7 +55,7 @@ documentation after setup.
 
 ### Set Identity and Reporting Contacts
 
-4. Replace the title, description, and scaffold-specific introduction in the
+4. Replace the title, description, and starter-specific introduction in the
    [root README](../../README.md) with the project's purpose and first steps.
    Keep useful paths to documentation, contribution, security, and the roadmap.
 5. Preview the one-time replacement of the source repository links and reporting
@@ -70,12 +70,17 @@ documentation after setup.
    ```
 
    Review every listed file. Repeat the command with `--apply` to update the
-   source URLs in `.github/` and the addresses in [SECURITY.md](../../SECURITY.md)
+   issue chooser URL in `.github/` and the addresses in [SECURITY.md](../../SECURITY.md)
    and [CODE_OF_CONDUCT.md](../../CODE_OF_CONDUCT.md). The helper refuses to run
-   while `origin` still points to the scaffold.
-6. Open each resulting issue-form and pull-request-template link and confirm it
-   points to the new repository. Review the security policy's supported-version
-   and response-time statements against actual maintenance commitments. Keep the
+   while `origin` points to the source starter instead of the new project's
+   repository. To keep the existing reporting address from either policy file, add
+   `--retain-source-contact` to both the preview and `--apply` commands. Confirm
+   that the address will receive reports for the new project.
+6. Open the issue-form and pull-request-template links in the new repository and
+   confirm they resolve there. Those Markdown links are repository-relative;
+   the issue chooser URL is updated by the helper. Review the security policy's
+   supported-version and response-time statements against actual maintenance
+   commitments. Keep the
    Contributor Covenant attribution and existing copyright notices intact.
 7. Assign real users or teams in [`.github/CODEOWNERS`](../../.github/CODEOWNERS).
    Confirm their access, then activate only the mappings the project needs. The
@@ -91,14 +96,14 @@ documentation after setup.
    choose an implementation only when the project has the needed requirements and
    a responsible decision maker. Update the ADR and its index when a decision is
    approved. Do not add sample secret files merely to complete setup.
-9. The cleanup step replaces [Milestone 0](../roadmap/milestone-0-repository-scaffolding.md)
-   with a concise record of this repository's starting practices. It keeps the
-   typical baseline estimate and records the cleanup date as both the actual
-   start and end of Milestone 0. Create Milestone 1 for the next project goal
-   through the [roadmap delivery rules](../roadmap/README.md#delivery-rules).
+9. The cleanup step retains the completed [Milestone 0](../roadmap/milestone-0-repository-scaffolding.md)
+   record and turns the Milestone 1 planning pages into a concise completed
+   application-baseline record. It keeps both estimates and records the cleanup
+   date as the actual start and end of both milestones. Plan Milestone 2 for the
+   next project goal through the [roadmap delivery rules](../roadmap/README.md#delivery-rules).
    Record this repository's checks and settings in the initialization PR.
 
-### Enable and Verify the Scaffold
+### Verify and Complete Repository Setup
 
 10. Run [local developer setup](../../scripts/README.md) in the new checkout to
     enable the commit hook, then run the local repository suite:
@@ -114,19 +119,24 @@ documentation after setup.
     [repository settings checklist](../architecture/repository-settings.md).
     Verify workflow permissions, review owners, merge rules, and private reporting.
     A copied workflow file does not activate branch protection.
-12. After the setup and settings are verified, preview the source-only removals:
+12. After the setup and settings are verified, confirm the copied Milestone 1
+    and all its phases are marked Completed with recorded actual end dates in the
+    [roadmap schedule](../roadmap/README.md#schedule). Then preview the one-time
+    cleanup and roadmap conversion:
 
     ```bash
     python3 scripts/dev/initialize-project.py finish
     ```
 
-    Review the exact updates and removals, then repeat with `--apply`. This removes
-    the one-time runbook and helper, its tests, the source-only Phase 6
-    verification record, and the source repository's Milestone 1 planning pages; it
-    updates their incoming links and replaces Milestone 0 with the project-owned
-    setup summary. The helper
-    refuses modified removal candidates or unexpected incoming links, and rolls
-    back its changes if documentation checks fail.
+    If either policy file still uses its original reporting address, add
+    `--retain-source-contact` to this preview and the `--apply` command. Review
+    the exact updates and removals, then repeat with `--apply`. This removes
+    the one-time runbook and helper, its tests, the starter-only verification
+    record, and the detailed Milestone 1 planning pages. It updates
+    incoming links, retains Milestone 0, and creates a completed Milestone 1 record.
+    The helper refuses modified files scheduled for replacement or removal and
+    unexpected incoming links. It rolls back its changes if documentation checks
+    fail.
 13. Review the final diff, run local checks, and push the cleanup commit to the
     draft PR. Record the selected history path, contacts, links, local and hosted
     results, settings, and remaining follow-ups. After the updated hosted checks
@@ -137,31 +147,37 @@ documentation after setup.
 
 Review the final diff and confirm that the README describes this project, the
 reporting contacts are monitored, GitHub forms point to the new repository, and
-CODEOWNERS names eligible reviewers. Search the active identity files for the
-scaffold's old URL and contact; inspect any matches before merging:
+CODEOWNERS names eligible reviewers. Search the active identity files for old
+repository URLs and placeholder owners; inspect any matches before merging:
 
 ```bash
-git grep -n -E 'austinperrin/(base|scaffolding)|perrinaustin@gmail.com|@your-maintainer|@your-org' \
+git grep -n -E 'austinperrin/(base|scaffolding|django-react-starter)|@your-maintainer|@your-org' \
   -- README.md SECURITY.md CODE_OF_CONDUCT.md .github
 ```
+
+Check the addresses in [SECURITY.md](../../SECURITY.md) and
+[CODE_OF_CONDUCT.md](../../CODE_OF_CONDUCT.md) directly. Keep an original address
+only when you explicitly selected it during setup and confirmed it is monitored
+for this project.
 
 Run `./scripts/ci/check-links.sh` and `./scripts/ci/check-docs.sh` after editing
 navigation and after final cleanup. Record hosted CI and settings verification for
 the new repository in the initialization PR or a linked setup record. Historical
-scaffold results do not replace these checks.
+source-repository results do not replace these checks.
 
 ## Recovery and Escalation
 
-If a contact is unavailable or a link points to the scaffold, correct it before
-publishing the new repository's issue forms or security policy. If settings differ
-from the checklist, record the gap and responsible maintainer; do not claim the
-control is active. Reverse unmerged setup changes on the topic branch and rerun
-the checks. A published reporting address or exposed credential may require the
+If a contact is unavailable or a link points to the source repository, correct
+it before publishing the new repository's issue forms or security policy. If
+settings differ from the checklist, record the gap and responsible maintainer;
+do not claim the control is active. Reverse unmerged setup changes on the topic
+branch and rerun the checks. A published reporting address or exposed credential
+may require the
 [credential-exposure procedure](secret-rotation.md), not only a Git revert.
 
 ## Related Documents
 
 - [GitHub configuration runbook](configure-github.md) - Platform setup and live verification.
 - [Repository ownership](../standards/ownership.md) - Maintainer and review-owner responsibilities.
-- [Repository roadmap](../roadmap/README.md) - Scaffold history and project milestones.
+- [Repository roadmap](../roadmap/README.md) - Baseline history and project milestones.
 - [Documentation standards](../standards/documentation.md) - Project documentation and navigation.
