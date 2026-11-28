@@ -38,7 +38,7 @@ future adopters through project setup and remove themselves during cleanup.
 
 ## Progress and Evidence
 
-In Progress. The root README and active GitHub links identify this starter.
+Completed. The root README and active GitHub links identify this starter.
 Milestone 0 has a concise baseline record, and the initializer handles its
 roadmap conversion in a future project copy. The
 [starter verification record](../../architecture/starter-verification.md) captures
@@ -46,9 +46,11 @@ the current ruleset and merge settings, prior hosted runs, and cases still to
 observe. The local repository suite passed on 2026-11-22: 36 developer tests,
 64 CI tests (five external-tool integration tests skipped), and 13 operations
 tests. A disposable project copy produced the expected cleanup preview without
-applying it to this starter. The Phase 1 changes still need a reviewed pull
-request and passing hosted checks before the schedule can mark the phase
-Completed.
+applying it to this starter. [PR #2](https://github.com/austinperrin/django-react-starter/pull/2)
+merged on 2026-11-24 after the Linux, macOS, external, and pull request title
+checks passed. The [roadmap schedule](../README.md#schedule) records the closing
+date. The starter verification record tracks later scheduled, fork, and
+Dependabot observations separately.
 
 ## Related Documents
 

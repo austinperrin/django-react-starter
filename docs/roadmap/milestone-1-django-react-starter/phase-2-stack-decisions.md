@@ -35,10 +35,14 @@ and [dependency standard](../../standards/dependencies.md).
 
 ## Progress and Evidence
 
-Planned. Link decisions and review evidence here.
+Planned. [ADR-0005](../../adr/0005-django-react-application-baseline.md) is Proposed;
+the initial `services/` layout is selected, while runtime, dependency, and API
+boundary choices await review. Record the complete outcome and implementation
+evidence here after approval.
 
 ## Related Documents
 
 - [Milestone 1](README.md) - Outcome and phase order.
+- [ADR-0005](../../adr/0005-django-react-application-baseline.md) - Proposed application baseline.
 - [Architecture Decision Records (ADRs) index](../../adr/README.md) - Decision status.
 - [Dependency management](../../standards/dependencies.md) - Selection and update rules.

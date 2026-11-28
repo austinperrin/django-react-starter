@@ -20,6 +20,7 @@ define their structure, numbering, review, and status lifecycle.
 | [ADR-0002](0002-secret-management.md) | Secret Management | Proposed | 2026-11-07 | Compare secret storage and delivery approaches for the project to choose. |
 | [ADR-0003](0003-enforce-repository-quality-checks.md) | Enforce Repository Quality Checks | Accepted | 2026-11-08 | Use shared repository checks with focused linters. |
 | [ADR-0004](0004-release-versioning.md) | Release Versioning | Proposed | 2026-11-09 | Compare release identifiers and leave the policy and implementation to the project. |
+| [ADR-0005](0005-django-react-application-baseline.md) | Django and React Application Baseline | Proposed | 2026-11-24 | Compare layout, runtime, dependency, and API-boundary choices for the project. |
 
 ## Create a Record
 

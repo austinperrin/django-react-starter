@@ -2,8 +2,8 @@
 
 [Docs](../README.md) > [Architecture](README.md) > Starter Repository Verification
 
-This record captures evidence for `austinperrin/django-react-starter` as of
-2026-11-22. The [repository settings checklist](repository-settings.md) owns the
+This record captures evidence for `austinperrin/django-react-starter` through
+2026-11-24. The [repository settings checklist](repository-settings.md) owns the
 required controls. A project copied from this starter must verify its own
 settings and checks; the [initialization runbook](../runbooks/initialize-repository.md)
 removes this source-repository record during project setup.
@@ -29,9 +29,11 @@ treated as proof of those settings.
 | Area | Evidence |
 | :--- | :--- |
 | Pull request checks | [PR #1](https://github.com/austinperrin/django-react-starter/pull/1) passed the Linux and macOS repository jobs and the Linux external-check job in its [final repository-check run](https://github.com/austinperrin/django-react-starter/actions/runs/44956401057). The [title-check run](https://github.com/austinperrin/django-react-starter/actions/runs/44957014193) passed. |
+| Starter identity pull request | [PR #2](https://github.com/austinperrin/django-react-starter/pull/2) passed the Linux, macOS, and external jobs in its [repository-check run](https://github.com/austinperrin/django-react-starter/actions/runs/45084702799) and the [title check](https://github.com/austinperrin/django-react-starter/actions/runs/45084702793) before merging on 2026-11-24. |
 | Default branch | The [main-branch run](https://github.com/austinperrin/django-react-starter/actions/runs/44957376618) passed all three repository-check jobs after PR #1 merged. Each job's checkout-cleanliness step passed. |
 | Invalid pull request title | An [invalid title failed](https://github.com/austinperrin/django-react-starter/actions/runs/44956834828); restoring the valid title [passed](https://github.com/austinperrin/django-react-starter/actions/runs/44956864850). PR #1 recorded that the invalid title blocked merging. |
 | Credential scan | A [manual default-branch run](https://github.com/austinperrin/django-react-starter/actions/runs/44956917682) passed full-history checkout, scanner installation, redacted scanning, and checkout cleanliness. |
+| Scheduled scan | The first [scheduled run](https://github.com/austinperrin/django-react-starter/actions/runs/45199219046) passed on 2026-11-23. Its full-history checkout, scanner installation, redacted scan, and checkout-cleanliness steps passed. |
 | Dependabot | The [initial GitHub Actions update job](https://github.com/austinperrin/django-react-starter/actions/runs/44926616855) succeeded. An applicable update pull request has not been observed in this repository. |
 
 The [PR #1 review record](https://github.com/austinperrin/django-react-starter/pull/1)
@@ -43,12 +45,11 @@ an independent recheck on 2026-11-22.
 
 ## Remaining Verification
 
-- Observe this repository's first scheduled credential-scan event. The manual
-  dispatch above verifies the workflow path, not schedule activation.
 - Test a pull request from an external fork and record its workflow approval and
   required-check behavior.
 - Inspect the title, checks, and review path of the first applicable Dependabot
   update pull request.
+
 These cases remain open until observed. Record later results here without
 claiming that the inherited scaffold's runs verified this repository.
 
